@@ -1,73 +1,724 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bob's Blog</title>
-</head>
-<body>
-  <h1>Bob's Blog</h1>
-  <h2>Hello there!</h2>
-  <em>January 1st, 2026</em>
-  <p>I’m based in Glasgow and thought it might be useful to have a place to record some thoughts, experiences and observations from daily life.</p>
-  <hr>
-</body>
-</html>
-
-<!--
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Better Website</title>
-<style type="text/css">
-  body {
-  margin: 40px auto;
-  max-width: 650px;
-  line-height: 1.6;
-  font-size: 18px;
-  color: #444;
-  padding: 0 10px
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plex: A Thoughtful Guide</title>
+<style>
+  /* ── Tokens ───────────────────────────────────────────────────────── */
+  :root {
+    --ink:        #1a1a1a;
+    --paper:      #f7f5f0;
+    --mid:        #e8e4dc;
+    --muted:      #7a7469;
+    --accent:     #c8860a;   /* warm amber — the Plex "gold" */
+    --accent-dim: #f0e0c0;
+    --rule:       #d4cfc6;
+
+    --serif:   'Georgia', 'Times New Roman', serif;
+    --sans:    system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+    --mono:    'Menlo', 'Monaco', 'Courier New', monospace;
+
+    --measure: 68ch;
+    --wide:    90ch;
   }
-  h1,h2,h3 {
-    line-height:1.2
+
+  /* ── Reset ────────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── Base ─────────────────────────────────────────────────────────── */
+  html { font-size: 18px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.75;
+    padding: 0 1.5rem 6rem;
+  }
+
+  /* ── Layout spine ─────────────────────────────────────────────────── */
+  .spine {
+    max-width: var(--measure);
+    margin: 0 auto;
+  }
+
+  .spine-wide {
+    max-width: var(--wide);
+    margin: 0 auto;
+  }
+
+  /* ── Masthead ─────────────────────────────────────────────────────── */
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding: 3.5rem 0 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.9rem;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.1rem;
+  }
+
+  .subtitle {
+    font-family: var(--sans);
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 52ch;
+  }
+
+  /* ── Chapter nav ──────────────────────────────────────────────────── */
+  nav.toc {
+    background: var(--mid);
+    border-left: 3px solid var(--accent);
+    padding: 1.4rem 1.8rem;
+    margin: 2.5rem 0 3.5rem;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+  }
+
+  nav.toc .toc-label {
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 0.7rem;
+  }
+
+  nav.toc ol {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem 2rem;
+  }
+
+  nav.toc a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  nav.toc a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── Section structure ────────────────────────────────────────────── */
+  section {
+    margin-bottom: 3.8rem;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin-bottom: 0.3rem;
+    padding-top: 0.5rem;
+  }
+
+  .section-rule {
+    width: 2.5rem;
+    height: 2px;
+    background: var(--accent);
+    margin: 0.5rem 0 1.4rem;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 2rem 0 0.6rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    max-width: var(--measure);
+  }
+
+  /* ── Callout boxes ────────────────────────────────────────────────── */
+  .callout {
+    background: var(--accent-dim);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.4rem;
+    margin: 1.5rem 0;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .callout strong {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .tip {
+    background: #eef4ee;
+    border-left-color: #4a7c59;
+  }
+  .tip strong { color: #4a7c59; }
+
+  .warn {
+    background: #fdf0e8;
+    border-left-color: #b05a20;
+  }
+  .warn strong { color: #b05a20; }
+
+  /* ── Setting cards ────────────────────────────────────────────────── */
+  .settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 1.2rem 0 1.8rem;
+  }
+
+  .setting-card {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 1rem 1.2rem;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+  }
+
+  .setting-card .setting-name {
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .setting-card p { max-width: 100%; margin: 0; }
+
+  /* ── Path breadcrumb ──────────────────────────────────────────────── */
+  .path {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    background: var(--mid);
+    border: 1px solid var(--rule);
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    margin: 0.3rem 0 1rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  .path .sep { color: var(--accent); margin: 0 0.3em; }
+
+  /* ── Steps list ───────────────────────────────────────────────────── */
+  ol.steps {
+    list-style: none;
+    counter-reset: step;
+    margin: 1rem 0 1.5rem;
+  }
+
+  ol.steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0 0.8rem;
+    margin-bottom: 0.7rem;
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    align-items: baseline;
+  }
+
+  ol.steps li::before {
+    content: counter(step);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.85rem;
+  }
+
+  /* ── Divider ──────────────────────────────────────────────────────── */
+  hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 3rem 0;
+  }
+
+  /* ── Footer ───────────────────────────────────────────────────────── */
+  footer {
+    border-top: 2px solid var(--ink);
+    padding-top: 1.5rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* ── Responsive ───────────────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    nav.toc ol { grid-template-columns: 1fr; }
+    .settings-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 2.2rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
   }
 </style>
 </head>
-
 <body>
-<header>
-<h1>This is <em>still</em> a website.</h1>
-  <aside>And it's more perfect than the last guy's.</aside>
-</header>
-<h2>Seriously, it takes minimal effort to improve this site.</h2>
-  <p><strong>7 declarations.</strong></p>
-  <p>That's how much CSS it took to turn that <a href="http://motherfuckingwebsite.com/">pile of trash</a> into this easy-to-read masterpiece. It's so simple and it <em>still</em> has all the glory of the original perfect website:</p>
-<ul>
-  <li>It's <em>still</em> lightweight and loads fast</li>
-  <li><em>Still</em> fits on all your screens</li>
-  <li><em>Still</em> looks the same in all your browsers</li>
-  <li>It's <em>still</em> accessible to every person that visits your site</li>
-  <li>It's <em>still</em> legible and gets your point across</li>
-</ul>
-<h3>And guess what:</h3>
-  <p>You never knew it, but it's easy to improve readability on your site. Here's how.</p>
-<h2>Let it breathe</h2>
-  <p>Look at lines 1 and 2 of the website you're building. Assuming they're not married they probably shouldn't be that close. The defaults are trash -- pick a minimum <code>line-height: 1.4</code> for body copy. Headings should be tighter. If you can't see that...go away.</p>
-  <p>If your text hits the side of the browser, that's bad. You ever see a book like that? Yes? What a poor book.</p>
-<h2>A little less contrast</h2>
-  <p>Black on white? How often do you see that kind of contrast in real life? Tone it down a bit. I would've even made this site's background a nice <code>#EEEEEE</code> if I wasn't so focused on keeping declarations to a lean 7 lines.</p>
-<h2>Size Matters</h2>
-  <p>Regardless of what anyone says, it's true. Bump that body copy to render close to 16px or more. Smaller type works well for print, not the screen.</p>
-<h2>Line-width</h2>
-  <p>Looking at an LCD screen is strainful enough. Don't make me read a line of text that's 200 characters long. Keep it to a nice 60-80 and users might actually read more than one sentence of your musings.</p>
-<h3>Yes, this is <em>also</em> satire, you muppet</h3>
-  <p>I love what the creator of <a href="http://motherfuckingwebsite.com/">this site's inspiration</a> did. What I'm saying is that it's so, so simple to make sites easier to read. Websites are broken by default, they are functional, high-performing, and accessible, but they're also ugly. You and all the other web designers out there need to make them not total trash.</p>
-  <blockquote>"You're a numpty if you use default browser styles."<br>- Socrates</blockquote>
-<hr>
-<h2>Epilogue</h2>
-  <p>Inspired by the geniuses behind <a href="http://motherfuckingwebsite.com/">motherf--kingwebsite.com</a> and <a href="http://txti.es">txti</a>.</p>
-  <p>This page&mdash;that isn't a total eyesore&mdash;was created by <a href="https://twitter.com/drew_mc">me</a> with help from <a href="https://twitter.com/gabehammersmith">him</a>.</p>
+
+<div class="spine">
+
+  <header>
+    <p class="eyebrow">iMac (High Sierra) &nbsp;→&nbsp; Apple TV</p>
+    <h1>A Thoughtful Guide<br>to Plex</h1>
+    <p class="subtitle">You've streamed your first film. Now let's make the most of everything Plex can do — from fine-tuning your library to mastering playback on Apple TV.</p>
+  </header>
+
+  <nav class="toc">
+    <p class="toc-label">Contents</p>
+    <ol>
+      <li><a href="#understanding">Understanding the Architecture</a></li>
+      <li><a href="#libraries">Building Your Libraries</a></li>
+      <li><a href="#server-settings">Server Settings</a></li>
+      <li><a href="#media-quality">Media Quality &amp; Transcoding</a></li>
+      <li><a href="#apple-tv">Apple TV Playback</a></li>
+      <li><a href="#organisation">Organisation &amp; Metadata</a></li>
+      <li><a href="#remote">Remote Access</a></li>
+      <li><a href="#maintenance">Maintenance &amp; Health</a></li>
+      <li><a href="#plex-pass">Plex Pass</a></li>
+      <li><a href="#tips">Final Tips</a></li>
+    </ol>
+  </nav>
+
+</div>
+
+<div class="spine">
+
+  <!-- 1. Architecture -->
+  <section id="understanding">
+    <h2>Understanding the Architecture</h2>
+    <div class="section-rule"></div>
+
+    <p>Plex works as a client–server system. Your iMac running High Sierra is the <em>server</em>: it hosts Plex Media Server, catalogues your files, manages metadata, and — when necessary — converts video in real time for whatever is asking to play it. Your Apple TV is the <em>client</em>: it asks the server for content and renders it on screen.</p>
+
+    <p>The distinction matters because almost every setting you'll encounter lives on one side or the other. Settings on the server control how your library is managed, how video is processed, and how Plex reaches the wider internet. Settings on the Apple TV control how that content is presented and played back to you specifically.</p>
+
+    <div class="callout">
+      <strong>Key Principle</strong>
+      When something goes wrong — choppy playback, missing metadata, a film that won't load — start by asking which side of this divide the problem lives on. Most answers follow from there.
+    </div>
+
+    <h3>The Plex Web Interface</h3>
+    <p>On your iMac, the primary way to manage the server is through Plex Web: open any browser and go to <strong>http://localhost:32400/web</strong>. This is where library management, server settings, and metadata editing all happen. You can reach the same interface from any machine on your network by replacing <em>localhost</em> with your iMac's local IP address.</p>
+  </section>
+
+  <!-- 2. Libraries -->
+  <section id="libraries">
+    <h2>Building Your Libraries</h2>
+    <div class="section-rule"></div>
+
+    <p>A library in Plex is a named collection of a single content type — Movies, TV Shows, Music, Photos — pointing to one or more folders on your iMac. Getting your library structure right from the beginning saves a great deal of remedial effort later.</p>
+
+    <h3>File Naming: The Foundation of Everything</h3>
+    <p>Plex identifies your media by matching filenames against its metadata agents (primarily The Movie Database for films, TheTVDB for television). The cleaner your filenames, the more reliably this works.</p>
+
+    <div class="callout">
+      <strong>Films</strong>
+      Name files as: <code>Movie Title (Year).mkv</code><br>
+      Example: <code>Andrei Rublev (1966).mkv</code>
+    </div>
+
+    <div class="callout">
+      <strong>TV Shows</strong>
+      Organise as: <code>Show Name/Season 01/Show Name - S01E03 - Episode Title.mkv</code><br>
+      The season subfolder is not strictly required, but it keeps things tidy and Plex expects it.
+    </div>
+
+    <h3>Adding a Library</h3>
+    <ol class="steps">
+      <li>In Plex Web, click the <strong>+</strong> icon beside Libraries in the left sidebar.</li>
+      <li>Choose the content type: Movies, TV Shows, Music, etc.</li>
+      <li>Give the library a name you'll recognise.</li>
+      <li>Click <strong>Add folders</strong> and navigate to the relevant folder on your iMac.</li>
+      <li>Under <strong>Advanced</strong>, review the agent and scanner — the defaults are almost always correct.</li>
+      <li>Click <strong>Add Library</strong>. Plex will begin scanning and fetching metadata immediately.</li>
+    </ol>
+
+    <div class="callout tip">
+      <strong>Tip</strong>
+      You can add multiple folders to a single library — useful if your films are spread across an internal drive and an external. Plex treats them as one unified collection.
+    </div>
+
+    <h3>Library Scanning</h3>
+    <p>Plex does not watch your folders in real time by default on all systems. If you add new files and they don't appear, go to the library in Plex Web, click the <strong>…</strong> menu, and choose <strong>Scan Library Files</strong>. You can also force a full metadata refresh from the same menu.</p>
+  </section>
+
+  <!-- 3. Server Settings -->
+  <section id="server-settings">
+    <h2>Server Settings</h2>
+    <div class="section-rule"></div>
+
+    <p>The server settings live at:</p>
+    <span class="path">Plex Web <span class="sep">›</span> Settings (wrench icon) <span class="sep">›</span> left sidebar</span>
+
+    <p>The categories below cover the ones most relevant to everyday use on a High Sierra iMac.</p>
+
+    <h3>General</h3>
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Friendly Name</p>
+        <p>The name shown on your Apple TV when choosing a server. Change it from the default so it's immediately identifiable — your name, or a room, works well.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Send crash reports</p>
+        <p>Leave this on if you want Plex to automatically report problems — helpful for debugging obscure playback issues in future updates.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Enable Plex Media Server debug logging</p>
+        <p>Leave off during normal use. Turn on temporarily only if troubleshooting a specific, reproducible problem.</p>
+      </div>
+    </div>
+
+    <h3>Remote Access</h3>
+    <p>This section controls whether Plex can be reached from outside your home network. See the dedicated <a href="#remote">Remote Access</a> section for a full discussion.</p>
+
+    <h3>Agents</h3>
+    <p>Agents are the services Plex consults to fetch artwork, descriptions, cast, and ratings. You can adjust the priority order for each content type — dragging sources up and down the list tells Plex which to prefer when they conflict. The Movie Database and TheTVDB are the best primary sources for most collections.</p>
+
+    <h3>Library</h3>
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Scan my library automatically</p>
+        <p>Tells Plex to watch for new files. On High Sierra this works via a periodic scan rather than a filesystem watcher. Recommended: on.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Run a partial scan when changes are detected</p>
+        <p>More efficient than a full scan. Leave this on.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Empty trash automatically after every scan</p>
+        <p>If you delete a file from disk, Plex will remove its entry from the library automatically. Recommended for keeping the library tidy.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Generate video preview thumbnails</p>
+        <p>Creates a strip of thumbnail images for the seek bar. Visually elegant but demands significant processing time and disk space. Set to <em>as a scheduled task</em> so it runs when you're not using the machine.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Generate chapter images</p>
+        <p>Similar to preview thumbnails — useful, but resource-intensive. Schedule it.</p>
+      </div>
+    </div>
+
+    <h3>Network</h3>
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Enable local network discovery (GDM)</p>
+        <p>Allows your Apple TV to find the server automatically. Keep this on — without it, you'd need to connect manually by IP address.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Strict TLS configuration</p>
+        <p>For a home setup, the default here is fine. Only adjust if you have specific security requirements.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Preferred network interface</p>
+        <p>If your iMac has both Wi-Fi and Ethernet active, you can specify which to use for Plex. Ethernet is more reliable for a server — select it if you're wired in.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Quality & Transcoding -->
+  <section id="media-quality">
+    <h2>Media Quality &amp; Transcoding</h2>
+    <div class="section-rule"></div>
+
+    <p>This is the single most consequential area of Plex configuration, and it's worth understanding what's actually happening.</p>
+
+    <p>When your Apple TV requests a video, Plex first checks whether it can play the file as-is — this is called <em>direct play</em>. If the video codec, audio codec, or container format isn't supported natively, Plex converts it in real time — this is <em>transcoding</em>. Transcoding is handled entirely by your iMac, which is why its processor matters: a High Sierra iMac from 2017 onwards handles 1080p transcoding comfortably, while 4K transcoding can be demanding.</p>
+
+    <h3>Transcoding Settings</h3>
+    <span class="path">Settings <span class="sep">›</span> Transcoder</span>
+
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Transcoder quality</p>
+        <p>Higher quality means more CPU usage. <em>Make my CPU hurt</em> produces the best image but may cause dropped frames on less powerful iMacs. <em>Automatic</em> is a safe, balanced starting point.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Transcoder temporary directory</p>
+        <p>Where Plex writes temporary files during conversion. By default this is on your system drive. If disk space is tight, redirect it to an external drive.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Background transcoding x264 preset</p>
+        <p>Controls the speed–quality trade-off for background tasks. The default is fine; only adjust if your iMac struggles under load.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Enable HDR tone mapping</p>
+        <p>If you have HDR source files, this converts them to SDR for displays that don't support HDR. Computationally expensive; test before leaving on.</p>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <strong>High Sierra Note</strong>
+      macOS High Sierra does not support hardware-accelerated transcoding via Plex's built-in mechanisms in the same way later macOS versions do. The iMac's CPU will handle all transcoding work. This is usually sufficient for one or two simultaneous streams at 1080p.
+    </div>
+
+    <h3>Maximising Direct Play</h3>
+    <p>The best way to reduce transcoding load is to ensure your media is in formats the Apple TV can handle natively: H.264 video in an MKV or MP4 container, with AAC or AC3 audio. If you're ripping your own discs, encoding to H.264/AAC will almost always direct play without any conversion.</p>
+
+    <p>H.265 (HEVC) content can direct play on Apple TV 4K with the right Plex Pass settings, but may transcode on older models. If you have a mixed collection, this is worth checking.</p>
+  </section>
+
+  <!-- 5. Apple TV Playback -->
+  <section id="apple-tv">
+    <h2>Apple TV Playback</h2>
+    <div class="section-rule"></div>
+
+    <p>The Plex app on Apple TV has its own set of settings, separate from — and sometimes interacting with — the server settings on your iMac. To access them, open the Plex app and navigate to:</p>
+    <span class="path">Plex App <span class="sep">›</span> Settings (gear icon, bottom of sidebar)</span>
+
+    <h3>Video Quality</h3>
+    <p>This is the most important client-side setting. It controls the maximum quality Plex will attempt to stream to your Apple TV.</p>
+
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Local Quality</p>
+        <p>The quality used when your Apple TV and iMac are on the same network. Set this to <em>Original</em> or <em>Maximum</em> — there is no bandwidth reason to reduce it at home, and doing so will force unnecessary transcoding.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Remote Quality</p>
+        <p>Used when accessing Plex from outside your home. Lower settings reduce data usage on mobile connections. <em>4 Mbps 720p</em> or <em>8 Mbps 1080p</em> are reasonable defaults for most broadband connections.</p>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <strong>Tip: The "Original" Setting</strong>
+      Setting Local Quality to <em>Original</em> tells Plex to attempt direct play first, and only transcode if there's no other option. This is almost always what you want on a home network. If a film stutters at this setting, it's typically a network issue, not a quality setting to reduce.
+    </div>
+
+    <h3>Audio</h3>
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Audio Boost</p>
+        <p>Amplifies the audio stream during transcoding. Useful if the volume feels low, particularly for older films. Has no effect during direct play.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Normalise Multi-Channel Audio</p>
+        <p>Reduces the volume difference between loud and quiet passages. Helpful late at night; best left off for critical listening.</p>
+      </div>
+    </div>
+
+    <h3>Subtitles</h3>
+    <p>Plex handles subtitles in two ways. <em>Embedded</em> subtitles are stored inside the video file and are the most reliable. <em>External</em> subtitles are separate .srt or .ass files in the same folder, named to match the video. Plex also supports downloading subtitles automatically via OpenSubtitles if you connect your account in server settings.</p>
+
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Subtitle Size</p>
+        <p>Adjustable in the Plex app. The default is readable at a normal viewing distance; increase if your TV is smaller or you sit further back.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Burn-in Subtitles</p>
+        <p>Forces subtitles to be rendered directly onto the video frame during transcoding. Only needed for image-based subtitles (common on Blu-ray rips) that the Apple TV can't otherwise display.</p>
+      </div>
+    </div>
+
+    <h3>Navigation &amp; Display</h3>
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Online Content</p>
+        <p>Controls whether free, ad-supported Plex content (films and TV) appears in your interface. Disable if you want only your own library visible — it keeps the experience cleaner.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Continue Watching</p>
+        <p>The row of in-progress titles on the home screen. Useful as a default view; can be removed from the home screen customisation if you prefer browsing by library.</p>
+      </div>
+    </div>
+
+    <h3>Customising the Home Screen</h3>
+    <p>On the Apple TV app, you can rearrange and remove rows from the Plex home screen. Long-press on a row's title with the remote to move or hide it. Pin your most-used libraries to the top and remove content rows you don't use — the result is a much more purposeful, personal interface.</p>
+  </section>
+
+  <!-- 6. Organisation & Metadata -->
+  <section id="organisation">
+    <h2>Organisation &amp; Metadata</h2>
+    <div class="section-rule"></div>
+
+    <p>One of Plex's great pleasures is a well-organised library — each film with its correct poster, the right year, a clean synopsis. Metadata is fetched automatically during scanning, but it requires human oversight for anything unusual.</p>
+
+    <h3>Fixing a Misidentified Title</h3>
+    <ol class="steps">
+      <li>In Plex Web, navigate to the item and click the pencil (edit) icon.</li>
+      <li>Select <strong>Fix Incorrect Match</strong>.</li>
+      <li>Search by title, year, or ID to find the correct entry.</li>
+      <li>Confirm the match. Plex will re-fetch all metadata and artwork.</li>
+    </ol>
+
+    <h3>Collections</h3>
+    <p>Collections let you group related films — a director's work, a franchise, films from a particular country — without creating separate libraries. Add a film to a collection via its edit menu. Collections appear as a single entry in the library, expanding when selected.</p>
+
+    <h3>Playlists</h3>
+    <p>Playlists are ordered, manually curated queues — useful for a film night sequence, a music album, or a marathon. Create them in Plex Web via <strong>Playlists</strong> in the left sidebar, then access them from any client including your Apple TV.</p>
+
+    <h3>Artwork</h3>
+    <p>Plex fetches multiple poster and backdrop options from its metadata sources. If the default artwork isn't to your taste, click the edit icon on any item and choose <strong>Poster</strong> or <strong>Art</strong> to see all available options — or upload your own. Custom artwork you upload is stored locally and survives library refreshes.</p>
+
+    <div class="callout tip">
+      <strong>Tip: Local Assets</strong>
+      If you place a file named <code>poster.jpg</code> in the same folder as a film, Plex will use it automatically without needing to upload through the interface. Useful for films with unusual artwork requirements.
+    </div>
+  </section>
+
+  <!-- 7. Remote Access -->
+  <section id="remote">
+    <h2>Remote Access</h2>
+    <div class="section-rule"></div>
+
+    <p>Plex can make your library available outside your home network — on a phone, a friend's Apple TV, or anywhere with a browser. This requires your iMac to be accessible from the internet, which Plex handles through a relay service unless you configure direct connections.</p>
+
+    <h3>How It Works</h3>
+    <p>By default, when remote access is enabled, Plex attempts to open a port on your router via UPnP and register your server's external address with Plex's cloud. Clients outside your network are directed to connect to your iMac's public IP address on that port.</p>
+
+    <span class="path">Settings <span class="sep">›</span> Remote Access</span>
+
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Enable Remote Access</p>
+        <p>The master switch. When the status shows "Fully accessible outside your network," the relay is working. A warning here usually means a router configuration issue.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Manually specify public port</p>
+        <p>If UPnP is unreliable on your router, specify a port (32400 is the default) and manually forward it in your router's settings. More reliable than automatic discovery.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Relay</p>
+        <p>If direct connections fail, Plex routes traffic through its own servers. Quality is limited (typically 2 Mbps) but requires no router configuration. Useful as a fallback; not ideal for high-quality remote streaming.</p>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <strong>High Sierra Consideration</strong>
+      Make sure macOS's built-in firewall (System Preferences → Security &amp; Privacy → Firewall) is either off or explicitly permitting Plex Media Server. A blocked firewall is the most common reason remote access fails on a Mac.
+    </div>
+  </section>
+
+  <!-- 8. Maintenance -->
+  <section id="maintenance">
+    <h2>Maintenance &amp; Health</h2>
+    <div class="section-rule"></div>
+
+    <p>A Plex server kept in good repair runs reliably for years. These are the practices worth building into your routine.</p>
+
+    <h3>Scheduled Tasks</h3>
+    <span class="path">Settings <span class="sep">›</span> Scheduled Tasks</span>
+    <p>Plex can run maintenance jobs — refreshing metadata, analysing files for audio loudness, generating thumbnails — on a schedule. The default window is between 2am and 5am. You can adjust this to any quiet period when your iMac is likely to be awake but idle. Each task can be enabled or disabled independently.</p>
+
+    <h3>Cleaning the Database</h3>
+    <p>Over time, Plex's database accumulates entries for files you've moved or deleted. Run <strong>Clean Bundles</strong> and <strong>Empty Trash</strong> from the Troubleshooting section periodically — monthly is sufficient for most collections.</p>
+
+    <span class="path">Settings <span class="sep">›</span> Troubleshooting <span class="sep">›</span> Clean Bundles / Empty Trash</span>
+
+    <h3>Updating Plex Media Server</h3>
+    <p>When an update is available, Plex will notify you within the web interface. On High Sierra, you can update by downloading the new version from <strong>plex.tv/media-server-downloads</strong> and running the installer — it replaces the existing installation without affecting your library or settings.</p>
+
+    <div class="callout tip">
+      <strong>Tip: Before Updating</strong>
+      Note your current version number before updating. If a new release introduces a problem, knowing the previous version makes it easy to roll back.
+    </div>
+
+    <h3>Keeping the iMac Awake</h3>
+    <p>Plex cannot serve content if your iMac is asleep. Go to <strong>System Preferences → Energy Saver</strong> and either disable sleep entirely, or set the computer sleep timer to <em>Never</em> while leaving the display sleep as you prefer. You can also enable <em>Wake for network access</em>, which allows the iMac to wake when a client requests something — though this has a small delay and is less reliable than simply keeping it awake.</p>
+
+    <h3>The Logs</h3>
+    <p>If something breaks unexpectedly, Plex's log files are the first place to look. They're accessible from the web interface under:</p>
+    <span class="path">Settings <span class="sep">›</span> Troubleshooting <span class="sep">›</span> Download Logs</span>
+    <p>The relevant file is usually <code>Plex Media Server.log</code>. Search it for ERROR or WARNING lines corresponding to the time the problem occurred.</p>
+  </section>
+
+  <!-- 9. Plex Pass -->
+  <section id="plex-pass">
+    <h2>Plex Pass</h2>
+    <div class="section-rule"></div>
+
+    <p>Plex's free tier is generous — full library management, streaming to any client, remote access. Plex Pass is the optional paid upgrade, available as a monthly subscription or a one-time lifetime purchase. The features it unlocks that are most relevant to your setup:</p>
+
+    <div class="settings-grid">
+      <div class="setting-card">
+        <p class="setting-name">Hardware-Accelerated Transcoding</p>
+        <p>Offloads conversion to the GPU rather than the CPU. On High Sierra this is limited, but it can reduce CPU load for supported codecs.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Offline Sync</p>
+        <p>Download content to your devices for watching without a server connection. Useful for travel.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Lyrics</p>
+        <p>Synced lyrics display for music libraries.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Live TV &amp; DVR</p>
+        <p>Requires a compatible USB tuner and antenna, but turns Plex into a fully functional DVR. Outside the scope of this guide but worth knowing exists.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Multi-User Home</p>
+        <p>Create separate managed accounts with their own watch histories, watch lists, and — for younger viewers — content restrictions.</p>
+      </div>
+      <div class="setting-card">
+        <p class="setting-name">Skip Intro</p>
+        <p>Plex detects and can skip TV show intro sequences automatically during continuous playback.</p>
+      </div>
+    </div>
+
+    <p>The lifetime pass pays for itself quickly if you use Plex seriously — particularly the multi-user and hardware transcoding features. But the free tier is sufficient for most single-household setups streaming from a local collection.</p>
+  </section>
+
+  <!-- 10. Final Tips -->
+  <section id="tips">
+    <h2>Final Tips</h2>
+    <div class="section-rule"></div>
+
+    <p>A few principles, gathered from experience, that don't fit neatly into any one settings screen:</p>
+
+    <p><strong>Wired is always better than wireless for the server.</strong> If your iMac is near your router, an Ethernet cable eliminates an entire category of potential streaming problems. Your Apple TV can remain on Wi-Fi without issue — the bottleneck is almost never the last hop to the TV.</p>
+
+    <p><strong>Give your media consistent, tidy filenames from the start.</strong> The temptation when building a library is to import everything quickly and fix it later. Later rarely comes. Ten minutes spent correctly naming a new film before adding it saves an hour of remedial metadata fixing down the line.</p>
+
+    <p><strong>Direct play is the goal; transcoding is the fallback.</strong> If a film is transcoding on a local network when it doesn't need to be, something in the chain is wrong — usually the quality setting on the Apple TV, or a subtitle format forcing a transcode. Investigating and resolving this once is worth the effort.</p>
+
+    <p><strong>The Plex forums are exceptionally good.</strong> The community at <strong>forums.plex.tv</strong> has addressed nearly every problem you're likely to encounter. Searching there before raising a support ticket will usually produce a faster answer.</p>
+
+    <p><strong>Back up your Plex data directory.</strong> Your library metadata, custom artwork, playlists, and watch history are stored in a single folder: <code>~/Library/Application Support/Plex Media Server/</code>. Backing this up means a new installation or a fresh hard drive won't lose any of that accumulated work.</p>
+
+    <div class="callout">
+      <strong>One Last Thing</strong>
+      Plex rewards a little attention to setup and then largely takes care of itself. The most satisfying version of this system is one you don't have to think about — where selecting a film on your Apple TV simply works, beautifully and reliably, every time.
+    </div>
+  </section>
+
+  <hr>
+
+  <footer>
+    <p>Written for Plex Media Server on macOS High Sierra, streaming to Apple TV. Settings and interface details reflect Plex as of 2024–2025; minor differences may exist in later versions.</p>
+  </footer>
+
+</div>
+
 </body>
 </html>
--->
