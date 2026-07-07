@@ -1,51 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Easy Chickpea Masala</title>
-<style type="text/css">
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+ <style>
   body {
-  margin: 40px auto;
-  max-width: 650px;
-  line-height: 1.6;
-  font-size: 18px;
-  color: #444;
-  padding: 0 10px
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.gallery {
+  --size: 100px;
+  display: grid;
+  grid-template-columns: repeat(6, var(--size));
+  grid-auto-rows: var(--size);
+  margin-bottom: var(--size);
+  place-items: start center;
+  gap: 5px;
+  
+  &:has(:hover) img:not(:hover),
+  &:has(:focus) img:not(:focus){
+    filter: brightness(0.5) contrast(0.5);
   }
-  h1,h2,h3 {
-    line-height:1.2
+
+  & img {
+    object-fit: cover;
+    width: calc(var(--size) * 2);
+    height: calc(var(--size) * 2);
+    clip-path: path("M90,10 C100,0 100,0 110,10 190,90 190,90 190,90 200,100 200,100 190,110 190,110 110,190 110,190 100,200 100,200 90,190 90,190 10,110 10,110 0,100 0,100 10,90Z");
+    transition: clip-path 0.25s, filter 0.75s;
+    grid-column: auto / span 2;
+    border-radius: 5px;
+
+    &:nth-child(5n - 1) { 
+      grid-column: 2 / span 2 
+    }
+
+    &:hover,
+    &:focus {
+      clip-path: path("M0,0 C0,0 200,0 200,0 200,0 200,100 200,100 200,100 200,200 200,200 200,200 100,200 100,200 100,200 100,200 0,200 0,200 0,100 0,100 0,100 0,100 0,100Z");
+      z-index: 1;
+      transition: clip-path 0.25s, filter 0.25s;
+    }
+    
+    &:focus {
+      outline: 1px dashed black;
+      outline-offset: -5px;
+    }
   }
+}
 </style>
 </head>
 
 <body>
-<header>
-<h1>Easy Chickpea Masala</h1>
-</header>
-<h2>Ingredients</h2>
-<ul>
-  <li>1 tbsp vegetable or olive oil</li>
-  <li>1 onion, finely chopped</li>
-  <li>1 tbsp garam masala</li>
-  <li>4 garlic cloves, crushed</li>
-  <li>2 inch piece fresh root ginger, peeled and grated</li>
-  <li>2 red finger chillies, very finely chopped</li>
-  <li>20g fresh coriander, finely chopped, reserving a few leaves for garnish</li>
-  <li>400g tin chickpeas, drained</li>
-  <li>2 x 400g tin chopped tomatoes</li>
-  <li>1-3 tsp caster sugar, to taste (optional)</li>
-  <li>pinch salt, to taste</li>
-  <li>1-2 tbsp lemon juice, to taste</li>
-</ul>
-<h2>Method</h2>
-<ol>
-  <li>Heat the oil in a medium pan, add the onion and garam masala and cook for 5-8 minutes, until soft and translucent.</li>
-  <li>Add the garlic, ginger, chillies and the chopped coriander, setting some coriander aside for garnish. Cook over a low heat for 3-5 minutes until fragrant.</li>
-  <li>Add the chickpeas and tomatoes and bring to the boil. Reduce the heat and simmer uncovered for 20 minutes, until reduced to the consistency of thick soup. If it is looking too thick, add a splash of water.</li>
-  <li>Remove from the heat, taste, and add the sugar, salt and lemon juice to taste.</li>
-  <li>Serve sprinkled with reserved coriander leaves.</li>
-</ol>
-<p><a href="https://www.bbc.co.uk/food/recipes/chana_masala_24511">BBC Good Food</a></p>
+  <article class="gallery">
+    <img src="./pic-1.avif" alt="guitar player at concert" />
+    <img src="./pic-2.avif" alt="duo singing" />
+    <img src="./pic-3.avif" alt="crowd cheering" />
+    <img src="./pic-4.avif" alt="singer performing" />
+    <img src="./pic-5.avif" alt="singer fistbumping crowd" />
+    <img src="./pic-6.avif" alt="man with a guitar singing" />
+    <img src="./pic-7.avif" alt="crowd looking at a lighted stage" />
+    <img src="./pic-8.avif" alt="woman singing on stage" />
+  </article>
 </body>
 </html>
