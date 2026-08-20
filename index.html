@@ -1,29 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Projetcs</title>
-<style type="text/css">
-  body {
-  margin: 40px auto;
-  max-width: 650px;
-  line-height: 1.6;
-  font-size: 18px;
-  color: #444;
-  padding: 0 10px
-  }
-  h1,h2,h3 {
-    line-height:1.2
-  }
-</style>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+        }
 
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: system-ui, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        main {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid #334155;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .card h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+            color: var(--text-main);
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
 <body>
-<header>
-<h1>Projects.</h1>
-</header>
-<h2><a href="/gallery/index.html">Gallery</a></h2>
-<h2><a href="/recipes/index.html">Recipes</a></h2>
+
+    <main>
+        <h1>Projects.</h1>
+        <p class="subtitle">Select a project below to explore each site.</p>
+
+        <nav class="grid">
+            <!-- Link Card 1 -->
+            <a href="/recipes/index.html" class="card">
+                <h2>Recipes</h2>
+                <p>A site designed for a collection of recipes.</p>
+            </a>
+
+            <!-- Link Card 2 -->
+            <a href="/gallery/index.html" class="card">
+                <h2>Gallery</h2>
+                <p>View an interactive image gallery.</p>
+            </a>
+        </nav>
+    </main>
+
 </body>
 </html>
